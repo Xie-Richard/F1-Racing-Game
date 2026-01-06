@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D F1 Racing Game</title>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: sans-serif; }
+        #overlay {
+            position: absolute; top: 10px; left: 10px; color: #fff; z-index: 10;
+            background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 6px;
+        }
+        #notChrome { position: absolute; inset: 0; display:flex; align-items:center; justify-content:center; background:#111; color:#fff; z-index:20; }
+        #instructions { position: absolute; right: 10px; top: 10px; background: rgba(0,0,0,0.4); color:#fff; padding:8px 12px; border-radius:6px; }
+    </style>
+</head>
+<body>
+    <div id="overlay">
+        <div>Speed: <span id="speed">0</span> km/h</div>
+        <div>Lap: <span id="lap">0</span></div>
+        <div>Time: <span id="time">0.00</span>s</div>
+    </div>
+    <div id="instructions">
+        Controls: W = accelerate, S = brake, A/D = steer, R = reset
+    </div>
+    <div id="notChrome" style="display:none;">
+        <h1>This game runs only on Google Chrome. Please switch to Chrome to play.</h1>
+    </div>
+
+    <!-- Load Three.js UMD build so the page works without Node/module CORS issues -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+
+    <!-- Main game script (non-module) -->
+    <script src="./src/main.js"></script>
+
+    <script>
+        // Browser detection script
+        const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+        if (!isChrome) {
+            document.getElementById('notChrome').style.display = 'flex';
+        }
+
+        // If Three.js failed to load, show an error
+        if (typeof THREE === 'undefined') {
+            document.body.innerHTML = '<div style="color:#fff;background:#111;padding:20px;display:flex;height:100vh;align-items:center;justify-content:center;">Failed to load Three.js. Please run a local server and open this page in Chrome. See README for details.</div>';
+        }
+    </script>
+</body>
+</html>
